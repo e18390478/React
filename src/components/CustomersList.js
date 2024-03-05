@@ -86,7 +86,7 @@ const CustomersList = () => {
   return (
     <Grid container spacing={2}>
       <Modal show={showModal} onHide={handleCloseModal} style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999 }}>
-        <Modal.Header closeButton style={{ backgroundColor: '#007bff', color: 'white', fontSize: '24px' }}>
+        <Modal.Header style={{ fontSize: '30px' }}>
           <Modal.Title>Update Customers</Modal.Title>
         </Modal.Header>
         <Modal.Body>
