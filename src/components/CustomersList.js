@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
-import { Grid, Paper, Typography ,Button } from '@mui/material';
-import { Modal  } from 'react-bootstrap';
+import { Grid, Paper, Typography, Button } from '@mui/material';
+import { Modal } from 'react-bootstrap';
 
 const CustomersList = () => {
   const [users, setUsers] = useState([]);
@@ -31,6 +31,7 @@ const CustomersList = () => {
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
+        setErrorMessage('Error fetching users');
       }
     };
 
@@ -46,6 +47,7 @@ const CustomersList = () => {
       window.location.reload();
     } catch (error) {
       console.error('Error deleting user:', error);
+      setErrorMessage('Error deleting user');
     }
   };
 
@@ -55,6 +57,18 @@ const CustomersList = () => {
   };
 
   const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      id: '',
+      first: '',
+      last: '',
+      email: '',
+      company: '',
+      country: ''
+    });
     setShowModal(false);
   };
 
@@ -71,37 +85,38 @@ const CustomersList = () => {
 
   return (
     <Grid container spacing={2}>
-      <Modal show={showModal} onHide={handleCloseModal} className="modal-big">
-        <Modal.Header closeButton>
-          <Modal.Title className="modal-title">Update User</Modal.Title>
+      <Modal show={showModal} onHide={handleCloseModal} style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999 }}>
+        <Modal.Header closeButton style={{ backgroundColor: '#007bff', color: 'white', fontSize: '24px' }}>
+          <Modal.Title>Update Customers</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>ID:</label>
-              <input type="text" value={formData.id} disabled className="form-control" />
+              <label style={{ fontSize: '30px' }}>ID:</label>
+              <input style={{ fontSize: '30px' }} type="text" value={formData.id} disabled className="form-control" />
             </div>
             <div className="form-group">
-              <label>First Name:</label>
-              <input type="text" value={formData.first} onChange={(e) => setFormData({ ...formData, first: e.target.value })} className="form-control" />
+              <label style={{ fontSize: '30px' }}>First Name:</label>
+              <input style={{ fontSize: '30px' }} type="text" value={formData.first} onChange={(e) => setFormData({ ...formData, first: e.target.value })} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Last Name:</label>
-              <input type="text" value={formData.last} onChange={(e) => setFormData({ ...formData, last: e.target.value })} className="form-control" />
+              <label style={{ fontSize: '30px' }}>Last Name:</label>
+              <input style={{ fontSize: '30px' }} type="text" value={formData.last} onChange={(e) => setFormData({ ...formData, last: e.target.value })} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Email:</label>
-              <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="form-control" />
+              <label style={{ fontSize: '30px' }}>Email:</label>
+              <input style={{ fontSize: '30px' }} type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Company:</label>
-              <input type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="form-control" />
+              <label style={{ fontSize: '30px' }}>Company:</label>
+              <input style={{ fontSize: '30px' }} type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="form-control" />
             </div>
             <div className="form-group">
-              <label>Country:</label>
-              <input type="text" value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="form-control" />
+              <label style={{ fontSize: '30px' }}>Country:</label>
+              <input style={{ fontSize: '30px' }} type="text" value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="form-control" />
             </div>
-            <Button variant="primary" type="submit">Update</Button>
+            <Button variant="contained" color="primary" type="submit">Update</Button>
+            <Button variant="contained" color="secondary" onClick={handleCancel}>Cancel</Button>
           </form>
         </Modal.Body>
       </Modal>
