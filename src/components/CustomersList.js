@@ -16,6 +16,14 @@ const CustomersList = () => {
     country: ''
   });
 
+  const [formErrors, setFormErrors] = useState({
+    first: '',
+    last: '',
+    email: '',
+    company: '',
+    country: ''
+  });
+
   const axiosInstance = useMemo(() => axios.create({
     baseURL: 'https://localhost:44335/api/v1/Sales',
     timeout: 10000,
@@ -74,13 +82,31 @@ const CustomersList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axiosInstance.post('/Update', formData);
-      setShowModal(false);
-      window.location.reload();
-    } catch (error) {
-      console.error('Error updating user:', error);
+    if (validateForm()) {
+      try {
+        await axiosInstance.post('/Update', formData);
+        setShowModal(false);
+        window.location.reload();
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
     }
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const errors = {};
+
+    for (const key in formData) {
+      const value = formData[key] ?? '';
+      if (typeof value === 'string' && value.trim() === '') {
+        errors[key] = 'This field is required';
+        valid = false;
+      }
+    }
+
+    setFormErrors(errors);
+    return valid;
   };
 
   return (
@@ -93,27 +119,32 @@ const CustomersList = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label style={{ fontSize: '30px' }}>ID:</label>
-              <input style={{ fontSize: '30px' }} type="text" value={formData.id} disabled className="form-control" />
+              <input style={{ fontSize: '30px' }} type="text" value={formData.id} disabled className="form-control"  />
             </div>
             <div className="form-group">
               <label style={{ fontSize: '30px' }}>First Name:</label>
               <input style={{ fontSize: '30px' }} type="text" value={formData.first} onChange={(e) => setFormData({ ...formData, first: e.target.value })} className="form-control" />
+              <span className="text-danger">{formErrors.first}</span>
             </div>
             <div className="form-group">
               <label style={{ fontSize: '30px' }}>Last Name:</label>
-              <input style={{ fontSize: '30px' }} type="text" value={formData.last} onChange={(e) => setFormData({ ...formData, last: e.target.value })} className="form-control" />
+              <input style={{ fontSize: '30px' }} type="text" value={formData.last} onChange={(e) => setFormData({ ...formData, last: e.target.value })} className="form-control"  />
+              <span className="text-danger">{formErrors.last}</span>
             </div>
             <div className="form-group">
               <label style={{ fontSize: '30px' }}>Email:</label>
-              <input style={{ fontSize: '30px' }} type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="form-control" />
+              <input style={{ fontSize: '30px' }} type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="form-control"  />
+              <span className="text-danger">{formErrors.email}</span>
             </div>
             <div className="form-group">
               <label style={{ fontSize: '30px' }}>Company:</label>
-              <input style={{ fontSize: '30px' }} type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="form-control" />
+              <input style={{ fontSize: '30px' }} type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="form-control"  />
+              <span className="text-danger">{formErrors.company}</span>
             </div>
             <div className="form-group">
               <label style={{ fontSize: '30px' }}>Country:</label>
-              <input style={{ fontSize: '30px' }} type="text" value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="form-control" />
+              <input style={{ fontSize: '30px' }} type="text" value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="form-control"  />
+              <span className="text-danger">{formErrors.country}</span>
             </div>
             <Button variant="contained" color="primary" type="submit">Update</Button>
             <Button variant="contained" color="secondary" onClick={handleCancel}>Cancel</Button>
