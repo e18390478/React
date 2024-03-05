@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography ,Button } from '@mui/material';
 
 const CustomersList = () => {
   const [users, setUsers] = useState([]);
@@ -17,6 +17,16 @@ const CustomersList = () => {
 
     fetchUsers();
   }, []);
+
+  const handleDelete = (id) => {
+    // Lógica para eliminar el usuario con el ID proporcionado
+    console.log('Deleting user with ID:', id);
+  };
+
+  const handleUpdate = (id) => {
+    // Lógica para actualizar el usuario con el ID proporcionado
+    console.log('Updating user with ID:', id);
+  };
 
   return (
     <Grid container spacing={2}>
@@ -49,11 +59,12 @@ const CustomersList = () => {
               Country: {user.country}
             </Typography>
           </Paper>
+            <Button variant="contained" color="primary" onClick={() => handleUpdate(user.id)}>Update</Button>
+            <Button variant="contained" color="secondary" onClick={() => handleDelete(user.id)}>Delete</Button>
         </Grid>
       ))}
     </Grid>
-  );
-  
+  );  
   
 };
 
